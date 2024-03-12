@@ -34,15 +34,15 @@
             @csrf
 
             <div class="form-group">
-                <label for="name">Name: </label>
-                <input type="text" class="form-control" id="name" aria-describedby="emailHelp" name="name" placeholder="Enter name" value="{{ old('name') }}">
+                <label for="name" style="@error('name') color: red; @enderror" >Name: </label>
+                <input type="text" class="form-control"  id="name" aria-describedby="emailHelp" name="name" placeholder="Enter name" value="{{ old('name') }}" >
                 @error('name')
                 <span style="color: red;">{{$message}}</span>
                 @enderror
             </div>
 
             <div class="form-group">
-                <label for="description">Description: </label>
+                <label for="description" style="@error('description') color: red; @enderror">Description: </label>
                 <input type="text" class="form-control" id="description" name="description" placeholder="description" value="{{ old('description') }}">
                 @error('description')
                 <span style="color: red;">{{$message}}</span>
@@ -50,14 +50,14 @@
             </div>
 
             <div class="form-group">
-                <label for="model">Model: </label>
+                <label for="model" style="@error('model') color: red; @enderror">Model: </label>
                 <input type="text" class="form-control" id="model" name="model" placeholder="model" value="{{ old('model') }}">
                 @error('model')
                 <span style="color: red;">{{$message}}</span>
                 @enderror
             </div>
 
-            <div class="form-group">
+            <div class="form-group" style="@error('produced_on') color: red; @enderror">
                 <label for="produced_on">Produced_on: </label>
                 <input type="date" class="form-control" id="produced_on" name="produced_on" placeholder="produced_on" value="{{ old('produced_on') }}">
                 @error('produced_on')
@@ -68,11 +68,9 @@
             <div class="form-group">
                 <label for="image">Image: </label>
 
-                <input type="file" class="form-control" id="image" name="image" value="{{ old('image') }}" onchange="updateImagePreview()">
+                <input type="file" id="imageInput" name="image" onchange="previewImage(event)" accept="image/*">
 
-                <!-- <input type="hidden" id="image_link" name="image_link" value="{{ old('image_link')}}">
-
-                <input id="image_preview" src="{{old('image_link')}}" style="max-width: 200px; max-height: 200px;"> -->
+                <img src="" alt="Preview Image" id="imagePreview" style="display: none; max-width: 200px; max-height: 200px">
 
                 @error('image')
                 <span style="color: red;">{{$message}}</span>
@@ -84,5 +82,36 @@
 
     </div>
 </body>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        var previousImage = localStorage.getItem('selectedImage');
+
+        if (previousImage) {
+            var imagePreview = document.getElementById('imagePreview');
+            imagePreview.src = previousImage;
+            imagePreview.style.display = 'block';
+        }
+    });
+
+    function previewImage(event) {
+        var input = event.target;
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block'; 
+                var imageUrl = URL.createObjectURL(input.files[0]);
+                localStorage.setItem('selectedImage', imageUrl);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+</script>
 
 </html>
