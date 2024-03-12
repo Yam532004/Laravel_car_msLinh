@@ -43,7 +43,6 @@
       <td>{{$car->produced_on}}</td>
     </tr>
 
-    <a class="btn btn-primary" href="{{ action([App\Http\Controllers\CarController::class, 'detroy'], ['car' => $car->id]) }}" role="button">Delete</a>
   </tbody>
 </table>
     </div>

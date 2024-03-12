@@ -49,7 +49,6 @@
                     <td>{{ $car->produced_on }}</td>
                     <td><img style="height: 100px; width: 100px;" src="{{'/img/'.$car->images}}" alt=""></td>
                     <td>
-                        <!-- Cach 1: <a href="car-detail/{{$car->id}}" role = "button">Detail</a> -->
                         <!-- Cach 3  -->
                         <a class="btn btn-primary" href="{{ action([App\Http\Controllers\CarController::class, 'show'], ['car' => $car->id]) }}" role="button">Detail</a>
                     </td>

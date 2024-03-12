@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use Illuminate\Http\Request;
 use App\Models\Flight;
+use Illuminate\Support\Facades\Validator;
 
 class CarController extends Controller
 {
@@ -32,39 +33,66 @@ class CarController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'bail|required|max:255',
-            'description' => 'bail|required|max:255',
-            'model' => 'bail|required|unique:cars,model',
-            'produced_on' => 'bail|required|date',
-            'image' => 'bail|required|image|mimes:jpeg,png,jpg,gif|max:2048', 
-        ],[
-            'image.mines'=>'Allow is image file',
-            'image.max'=>'Images max lower than 2Mb',
-            'name.required'=>'Name is required',
-            'description.required'=>'Description is required',
-            'model.required'=>'Model is required',
-            'model.unique'=>'Model da bi trung',
-            'produced_on.required'=>'Produced_on is required',
-            'image.required'=>'Image is required',
+        // $validatedData = $request->validate([
+        //     'name' => 'bail|required|max:255',
+        //     'description' => 'bail|required|max:255',
+        //     'model' => 'bail|required|unique:cars,model',
+        //     'produced_on' => 'bail|required|date',
+        //     'image' => 'bail|required|image|mimes:jpeg,png,jpg,gif|max:2048', 
+        // ],[
+        //     'image.mines'=>'Allow is image file',
+        //     'image.max'=>'Images max lower than 2Mb',
+        //     'name.required'=>'Name is required',
+        //     'description.required'=>'Description is required',
+        //     'model.required'=>'Model is required',
+        //     'model.unique'=>'Model da bi trung',
+        //     'produced_on.required'=>'Produced_on is required',
+        //     'image.required'=>'Image is required',
+        // ]);
+
+        // $car = new Car();
+
+        // if ($request->hasFile('image')) {
+        //     $file = $request->file('image');
+        //     if ($file->isValid()) {
+        //         $name = time() . "_" . $file->getClientOriginalName();
+        //         $destinationPath = public_path('img');
+        //         $file->move($destinationPath, $name);
+        //         $car->images = $name;
+        //     }
+        // }
+
+        // // Các phần còn lại của lưu dữ liệu
+        // $car->description = $validatedData['description'];
+        // $car->model = $validatedData['model'];
+        // $car->produced_on = $validatedData['produced_on'];
+        // $car->images = $validatedData['image'];
+        // $car->save();
+
+        // return redirect('cars')->with('success', 'Add new product Successful!');
+
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'description' => 'required|max:255',
+            'model' => 'required|unique:cars,model',
+            'produced_on' => 'required|date',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $car = new Car();
-
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            if ($file->isValid()) {
-                $name = time() . "_" . $file->getClientOriginalName();
-                $destinationPath = public_path('img');
-                $file->move($destinationPath, $name);
-                $car->images = $name;
-            }
+        if ($validator->fails()) {
+            return redirect('/cars/create')
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        // Các phần còn lại của lưu dữ liệu
+        $validatedData = $validator->validated(); 
+
+        $car = new Car();
         $car->description = $validatedData['description'];
         $car->model = $validatedData['model'];
         $car->produced_on = $validatedData['produced_on'];
+        
         $car->images = $validatedData['image'];
         $car->save();
 
