@@ -19,7 +19,7 @@
 <body>
 <div class="row">
   <div class="col-md-6">
-    <img class="card-img-top" src="{{$car->images}}" alt="">
+    <img class="card-img-top" src="{{'/img/'.$car->images}}" alt="">
   </div>
   <div class="col-md-6">
     <div class="card-body">
@@ -42,6 +42,8 @@
       <th scope="row">Produced_on</th>
       <td>{{$car->produced_on}}</td>
     </tr>
+
+    <a class="btn btn-primary" href="{{ action([App\Http\Controllers\CarController::class, 'detroy'], ['car' => $car->id]) }}" role="button">Delete</a>
   </tbody>
 </table>
     </div>

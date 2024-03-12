@@ -33,15 +33,18 @@ class CarController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'bail|required',
-            'description' => 'bail|required',
-            'model' => 'bail|required',
-            'produced_on' => 'bail|required',
+            'name' => 'bail|required|max:255',
+            'description' => 'bail|required|max:255',
+            'model' => 'bail|required|unique:cars,model',
+            'produced_on' => 'bail|required|date',
             'image' => 'bail|required|image|mimes:jpeg,png,jpg,gif|max:2048', 
         ],[
+            'image.mines'=>'Allow is image file',
+            'image.max'=>'Images max lower than 2Mb',
             'name.required'=>'Name is required',
             'description.required'=>'Description is required',
             'model.required'=>'Model is required',
+            'model.unique'=>'Model da bi trung',
             'produced_on.required'=>'Produced_on is required',
             'image.required'=>'Image is required',
         ]);
@@ -65,7 +68,6 @@ class CarController extends Controller
         $car->images = $validatedData['image'];
         $car->save();
 
-        // return back()->with('success', "Add new product Succesful!");
         return redirect('cars')->with('success', 'Add new product Successful!');
     }
 
@@ -109,5 +111,8 @@ class CarController extends Controller
     public function destroy(string $id)
     {
         //
+        $car = Car::find($id);
+        $deleteCar = $car->delete();
+        return redirect('cars')->with('success', 'D new product Successful!');
     }
 }
