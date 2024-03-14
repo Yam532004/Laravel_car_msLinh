@@ -34,7 +34,12 @@
             @csrf
 
             <div class="form-group">
+                @if ($errors->has('name'))
+                <label for="name" style="color: red;">Name: </label>
+                @else
                 <label for="name">Name: </label>
+                @endif
+
                 <input type="text" class="form-control" id="name" aria-describedby="emailHelp" name="name" placeholder="Enter name" value="{{ old('name') }}">
                 @error('name')
                 <span style="color: red;">{{$message}}</span>
@@ -42,7 +47,11 @@
             </div>
 
             <div class="form-group">
+                @if ($errors->has('description'))
+                <label for="description" style="color: red;">Description: </label>
+                @else
                 <label for="description">Description: </label>
+                @endif
                 <input type="text" class="form-control" id="description" name="description" placeholder="description" value="{{ old('description') }}">
                 @error('description')
                 <span style="color: red;">{{$message}}</span>
@@ -50,7 +59,11 @@
             </div>
 
             <div class="form-group">
+            @if ($errors->has('model'))
+                <label for="model" style="color: red;">Model: </label>
+                @else
                 <label for="model">Model: </label>
+                @endif
                 <input type="text" class="form-control" id="model" name="model" placeholder="model" value="{{ old('model') }}">
                 @error('model')
                 <span style="color: red;">{{$message}}</span>
@@ -58,7 +71,11 @@
             </div>
 
             <div class="form-group">
+            @if ($errors->has('produced_on'))
+                <label for="produced_on" style="color: red;">Produced_on: </label>
+                @else
                 <label for="produced_on">Produced_on: </label>
+                @endif
                 <input type="date" class="form-control" id="produced_on" name="produced_on" placeholder="produced_on" value="{{ old('produced_on') }}">
                 @error('produced_on')
                 <span style="color: red;">{{$message}}</span>
@@ -66,7 +83,7 @@
             </div>
 
             <div class="form-group">
-                <label for="image">Image: </label>
+                <label for="image" @error('model') style="color: red;" @enderror>Image: </label>
 
                 <input type="file" class="form-control" id="image" name="image" value="{{ old('image') }}" onchange="updateImagePreview()">
 
