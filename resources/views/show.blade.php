@@ -17,36 +17,45 @@
 </head>
 
 <body>
-<div class="row">
-  <div class="col-md-6">
-    <img class="card-img-top" src="{{'/img/'.$car->images}}" alt="">
-  </div>
-  <div class="col-md-6">
-    <div class="card-body">
-      <h2 style="color: red; text-align:center; font-family:Verdana, Geneva, Tahoma, sans-serif">{{$car->model}}</h2>
-      <table class="table">
-  <tbody>
-    <tr>
-      <th scope="row">ID</th>
-      <td>{{$car->id}}</td>
-    </tr>
-    <tr>
-      <th scope="row">Model</th>
-      <td>{{$car->model}}</td>
-    </tr>
-    <tr>
-      <th scope="row">Description</th>
-      <td>{{$car->description}}</td>
-    </tr>
-    <tr>
-      <th scope="row">Produced_on</th>
-      <td>{{$car->produced_on}}</td>
-    </tr>
-
-  </tbody>
-</table>
+  <div class="row">
+    <div class="col-md-6">
+      <img class="card-img-top" src="{{ asset($car->images) }}" alt="">
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h2 style="color: red; text-align:center; font-family:Verdana, Geneva, Tahoma, sans-serif">{{$car->model}}</h2>
+        <table class="table">
+          <tbody>
+            <tr>
+              <th scope="row">ID</th>
+              <td>{{$car->id}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Model</th>
+              <td>{{$car->model}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Description</th>
+              <td>{{$car->description}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Produced_on</th>
+              <td>{{$car->produced_on}}</td>
+            </tr>
+            <tr>
+              <td>
+                <form action="{{route('cars.destroy', ['car' => $car->id])}}" method="POST">
+                @csrf
+                  @method('DELETE')
+                  <button type="submit" class="btn btn-primary">Delete</button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
 </body>
+
 </html>

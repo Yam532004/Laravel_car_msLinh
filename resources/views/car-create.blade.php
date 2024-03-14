@@ -32,15 +32,12 @@
 
         <form style="width: 500px;" method="POST" action="{{route('cars.store')}}" enctype="multipart/form-data">
             @csrf
-
             <div class="form-group">
-
                 @if ($errors->has('name'))
                 <label for="name" style="color: red;">Name: </label>
                 @else
                 <label for="name">Name: </label>
                 @endif
-
                 <input type="text" class="form-control" id="name" aria-describedby="emailHelp" name="name" placeholder="Enter name" value="{{ old('name') }}">
                 @error('name')
                 <span style="color: red;">{{$message}}</span>
@@ -108,16 +105,6 @@
 </body>
 
 <script>
-    window.addEventListener('DOMContentLoaded', (event) => {
-        var previousImage = localStorage.getItem('selectedImage');
-
-        if (previousImage) {
-            var imagePreview = document.getElementById('imagePreview');
-            imagePreview.src = previousImage;
-            imagePreview.style.display = 'block';
-        }
-    });
-
     function previewImage(event) {
         var input = event.target;
 

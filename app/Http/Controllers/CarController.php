@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use Illuminate\Http\Request;
 use App\Models\Flight;
+// use Faker\Core\File;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class CarController extends Controller
 {
@@ -52,15 +54,7 @@ class CarController extends Controller
 
         // $car = new Car();
 
-        // if ($request->hasFile('image')) {
-        //     $file = $request->file('image');
-        //     if ($file->isValid()) {
-        //         $name = time() . "_" . $file->getClientOriginalName();
-        //         $destinationPath = public_path('img');
-        //         $file->move($destinationPath, $name);
-        //         $car->images = $name;
-        //     }
-        // }
+       
 
         // // Các phần còn lại của lưu dữ liệu
         // $car->description = $validatedData['description'];
@@ -86,14 +80,24 @@ class CarController extends Controller
                 ->withInput();
         }
 
-        $validatedData = $validator->validated(); 
+        $validatedData = $validator->validated();
 
         $car = new Car();
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            if ($file->isValid()) {
+                $name = time() . "_" . $file->getClientOriginalName();
+                $destinationPath = 'img'; // chỉ cần lưu tên thư mục, không cần public_path()
+                $file->move(public_path($destinationPath), $name); // thư mục public/img
+                $car->images = $destinationPath.'/' . $name; // lưu đường dẫn tương đối
+            }
+        }
         $car->description = $validatedData['description'];
         $car->model = $validatedData['model'];
         $car->produced_on = $validatedData['produced_on'];
-        
-        $car->images = $validatedData['image'];
+        // $car->images = $validatedData['image'];
+
         $car->save();
 
         return redirect('cars')->with('success', 'Add new product Successful!');
@@ -122,7 +126,8 @@ class CarController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $car = Car::find($id);
+        return view('car-update', compact('car'));
     }
 
     /**
@@ -130,7 +135,35 @@ class CarController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $car = Car::findOrFail($id);
+        $car->model = $request->model;
+        $car->description = $request->description;
+        $car->produced_on = $request->produced_on;
+
+        $validatedData = $request->validate([
+            'model' => 'required|string',
+            'description' => 'string',
+            'produced_on' => 'date',
+            'images' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Kiểm tra ảnh
+        ]);
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            if ($file->isValid()) {
+                $name = time() . "_" . $file->getClientOriginalName();
+                $destinationPath = 'img'; // chỉ cần lưu tên thư mục, không cần public_path()
+                $file->move(public_path($destinationPath), $name); // thư mục public/img
+                $car->images = $destinationPath.'/' . $name; // lưu đường dẫn tương đối
+            }
+        }
+
+        $car->description = $validatedData['description'];
+        $car->model = $validatedData['model'];
+        $car->produced_on = $validatedData['produced_on'];
+
+        $car->save();
+
+        return redirect()->route('cars.show', $car->id)->with('success', 'Update successful');
     }
 
     /**
@@ -138,9 +171,12 @@ class CarController extends Controller
      */
     public function destroy(string $id)
     {
-        //
-        $car = Car::find($id);
-        $deleteCar = $car->delete();
-        return redirect('cars')->with('success', 'D new product Successful!');
+        $car = Car::findOrFail($id);
+        
+        if (File::exists($car->images)){
+            File::delete($car->images);
+        }
+        $car->delete();
+        return redirect('cars')->with('success', 'Delete product Successful!');
     }
 }
