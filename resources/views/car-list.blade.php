@@ -18,16 +18,15 @@
 </head>
 
 <body>
-    <div class="container">
+    <div>
         <h1 style="color: red; ;text-align: center;">Car-list of Am hii</h1>
         @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-            @endif
-            
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
+
         <a class="btn btn-primary mt-3" href="{{ action([App\Http\Controllers\CarController::class, 'create']) }}" role="button">Create</a>
-     
         <table class="table table-hover">
             <thead class="thead-dark">
                 <tr>
@@ -39,7 +38,7 @@
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            
+
             <tbody>
                 @foreach ($cars as $car)
                 <tr>
@@ -47,11 +46,15 @@
                     <td>{{ $car->description }}</td>
                     <td>{{ $car->model }}</td>
                     <td>{{ $car->produced_on }}</td>
-                    <td><img style="height: 100px; width: 100px;" src="{{'/img/'.$car->images}}" alt=""></td>
+                    <td><img style="height: 100px; width: 100px;" src="{{ asset($car->images) }}" alt=""></td>
                     <td>
                         <!-- Cach 3  -->
                         <a class="btn btn-primary" href="{{ action([App\Http\Controllers\CarController::class, 'show'], ['car' => $car->id]) }}" role="button">Detail</a>
                     </td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ action([App\Http\Controllers\CarController::class, 'edit'], ['car' => $car->id]) }}" role="button">Update</a>
+                    </td>
+                   
                 </tr>
                 @endforeach
             </tbody>
