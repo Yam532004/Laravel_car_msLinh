@@ -34,6 +34,7 @@
                     <th scope="col">Description</th>
                     <th scope="col">Model</th>
                     <th scope="col">Produced On</th>
+                    <th scope="col">Manufacturer</th>
                     <th scope="col">Image</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -46,7 +47,15 @@
                     <td>{{ $car->description }}</td>
                     <td>{{ $car->model }}</td>
                     <td>{{ $car->produced_on }}</td>
-                    <td><img style="height: 100px; width: 100px;" src="{{ asset($car->images) }}" alt=""></td>
+                    <td>
+                        @foreach($mfs as $mf)
+                            @if($car->mf_id == $mf->id)
+                            {{ $mf->mf_name }}
+                            @endif
+                        @endforeach
+
+                    </td>
+                    <td><img style="height: 100px; width: 100px;" src="{{ asset('/img/'.$car->images) }}" alt=""></td>
                     <td>
                         <!-- Cach 3  -->
                         <a class="btn btn-primary" href="{{ action([App\Http\Controllers\CarController::class, 'show'], ['car' => $car->id]) }}" role="button">Detail</a>
@@ -54,7 +63,7 @@
                     <td>
                         <a class="btn btn-primary" href="{{ action([App\Http\Controllers\CarController::class, 'edit'], ['car' => $car->id]) }}" role="button">Update</a>
                     </td>
-                   
+
                 </tr>
                 @endforeach
             </tbody>

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Mf;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,12 +18,13 @@ class CarFactory extends Factory
     public function definition(): array
     {
         return [
-            'description' => $this->faker->text(10),
+            "description" => $this->faker->text(10),
             "model" => $this->faker->text(10).'@example.com',
             "images" => "car".($this->faker->numberBetween(1, 3)).".jpg",
             "produced_on" =>$this->faker->dateTime(),
             "created_at" =>$this->faker->dateTime(),
             "updated_at" =>$this->faker->dateTime(),
+            "mf_id" => Mf::pluck('id')->random(),
         ];
     }
 }

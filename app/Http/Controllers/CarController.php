@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use App\Models\Mf;
 use Illuminate\Http\Request;
 use App\Models\Flight;
 // use Faker\Core\File;
@@ -17,8 +18,9 @@ class CarController extends Controller
     public function index()
     {
         $cars = Car::all();
+        $mfs = Mf::all();
         return view('car-list  
-        ', compact('cars'));
+        ', compact('cars', 'mfs'));
     }
 
     /**
@@ -54,7 +56,7 @@ class CarController extends Controller
 
         // $car = new Car();
 
-       
+
 
         // // Các phần còn lại của lưu dữ liệu
         // $car->description = $validatedData['description'];
@@ -90,7 +92,7 @@ class CarController extends Controller
                 $name = time() . "_" . $file->getClientOriginalName();
                 $destinationPath = 'img'; // chỉ cần lưu tên thư mục, không cần public_path()
                 $file->move(public_path($destinationPath), $name); // thư mục public/img
-                $car->images = $destinationPath.'/' . $name; // lưu đường dẫn tương đối
+                $car->images = $destinationPath . '/' . $name; // lưu đường dẫn tương đối
             }
         }
         $car->description = $validatedData['description'];
@@ -153,7 +155,7 @@ class CarController extends Controller
                 $name = time() . "_" . $file->getClientOriginalName();
                 $destinationPath = 'img'; // chỉ cần lưu tên thư mục, không cần public_path()
                 $file->move(public_path($destinationPath), $name); // thư mục public/img
-                $car->images = $destinationPath.'/' . $name; // lưu đường dẫn tương đối
+                $car->images = $destinationPath . '/' . $name; // lưu đường dẫn tương đối
             }
         }
 
@@ -172,8 +174,8 @@ class CarController extends Controller
     public function destroy(string $id)
     {
         $car = Car::findOrFail($id);
-        
-        if (File::exists($car->images)){
+
+        if (File::exists($car->images)) {
             File::delete($car->images);
         }
         $car->delete();

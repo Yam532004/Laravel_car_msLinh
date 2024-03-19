@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('model');
             $table->date('produced_on');
             $table->string('images');
+            $table->unsignedBigInteger('mf_id');
+            $table->foreign('mf_id')->references('id')->on('mfs');
             $table->timestamps();
         });
     }
