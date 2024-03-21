@@ -17,44 +17,50 @@
 </head>
 
 <body>
-<div class="row">
-    <div class="col-md-6">
-        <label for="imageInput">Select Image:</label>
-        <input type="file" id="imageInput" name="image" onchange="previewImage(event)" accept="image/*">
-        <img src="" alt="Preview Image" id="imagePreview" style="display: none; max-width: 200px; max-height: 200px">
-    </div>
-    <div class="col-md-6">
-        <div class="card-body">
-            <h2 style="color: red; text-align:center; font-family:Verdana, Geneva, Tahoma, sans-serif">{{$car->model}}</h2>
-            <form action="{{route('cars.update', ['car' => $car->id])}}" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="form-group">
-                    <label for="model">Model:</label>
-                    <input type="text" class="form-control" id="model" name="model" value="{{$car->model}}">
-                    @error('model')
-                    <span class="text-danger">{{$message}}</span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="description">Description:</label>
-                    <input type="text" class="form-control" id="description" name="description" value="{{$car->description}}">
-                    @error('description')
-                    <span class="text-danger">{{$message}}</span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="produced_on">Produced On:</label>
-                    <input type="date" class="form-control" id="produced_on" name="produced_on" value="{{$car->produced_on}}">
-                    @error('produced_on')
-                    <span class="text-danger">{{$message}}</span>
-                    @enderror
-                </div>
-                <button type="submit" class="btn btn-primary">Update</button>
-            </form>
+    <div class="row">
+        <div class="col-md-6">
+            <label for="imageInput">Select Image:</label>
+            <input type="file" id="imageInput" name="image" onchange="previewImage(event)" accept="image/*">
+            <img src="" alt="Preview Image" id="imagePreview" style="display: none; max-width: 200px; max-height: 200px">
+        </div>
+        <div class="col-md-6">
+            <div class="card-body">
+                <h2 style="color: red; text-align:center; font-family:Verdana, Geneva, Tahoma, sans-serif">{{$car->model}}</h2>
+                <form action="{{route('cars.update', ['car' => $car->id])}}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label for="model">Model:</label>
+                        <input type="text" class="form-control" id="model" name="model" value="{{$car->model}}">
+                        @error('model')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <input type="text" class="form-control" id="description" name="description" value="{{$car->description}}">
+                        @error('description')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="mf" @error('mf') style="color: red;" @enderror>MF: </label>
+                        <select class="form-select" aria-label="Default select example" name="mf">
+                            <option selected>Open this select menu</option>
+                            @foreach($mfs as $mf)
+                            <option value="{{$mf->id}}" @if ($car->mf_id == $mf->id) selected @endif> {{ $mf->mf_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="img"></label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 
 </body>

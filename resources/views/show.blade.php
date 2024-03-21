@@ -19,7 +19,7 @@
 <body>
   <div class="row">
     <div class="col-md-6">
-      <img class="card-img-top" src="{{ asset($car->images) }}" alt="">
+      <img class="card-img-top" src="{{ asset('/img/'.$car->images) }}" alt="">
     </div>
     <div class="col-md-6">
       <div class="card-body">
@@ -43,9 +43,18 @@
               <td>{{$car->produced_on}}</td>
             </tr>
             <tr>
+              <th scope="col">Manufacturer</th>
+              <td>@foreach($mfs as $mf)
+                @if($car->mf_id == $mf->id)
+                {{ $mf->mf_name }}
+                @endif
+                @endforeach
+              </td>
+            </tr>
+            <tr>
               <td>
                 <form action="{{route('cars.destroy', ['car' => $car->id])}}" method="POST">
-                @csrf
+                  @csrf
                   @method('DELETE')
                   <button type="submit" class="btn btn-primary">Delete</button>
                 </form>

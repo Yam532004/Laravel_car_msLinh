@@ -60,7 +60,7 @@
 
             <div class="form-group">
 
-            @if ($errors->has('model'))
+                @if ($errors->has('model'))
                 <label for="model" style="color: red;">Model: </label>
                 @else
                 <label for="model">Model: </label>
@@ -74,7 +74,7 @@
 
 
             <div class="form-group">
-            @if ($errors->has('produced_on'))
+                @if ($errors->has('produced_on'))
                 <label for="produced_on" style="color: red;">Produced_on: </label>
                 @else
 
@@ -84,6 +84,16 @@
                 @error('produced_on')
                 <span style="color: red;">{{$message}}</span>
                 @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="mf" @error('mf') style="color: red;" @enderror>MF: </label>
+                <select class="form-select" aria-label="Default select example" name="mf">
+                    <option selected>Open this select menu</option>
+                    @foreach($mfs as $mf)
+                    <option value="{{$mf->id}}">{{ $mf->mf_name}}</option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="form-group">
@@ -114,7 +124,7 @@
             reader.onload = function(e) {
                 var imagePreview = document.getElementById('imagePreview');
                 imagePreview.src = e.target.result;
-                imagePreview.style.display = 'block'; 
+                imagePreview.style.display = 'block';
                 var imageUrl = URL.createObjectURL(input.files[0]);
                 localStorage.setItem('selectedImage', imageUrl);
             }

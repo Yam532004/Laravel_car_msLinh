@@ -47,27 +47,18 @@
                     <td>{{ $car->description }}</td>
                     <td>{{ $car->model }}</td>
                     <td>{{ $car->produced_on }}</td>
-                    <td>
-                        @foreach($mfs as $mf)
-                            @if($car->mf_id == $mf->id)
-                            {{ $mf->mf_name }}
-                            @endif
-                        @endforeach
-
-                    </td>
+                    <td>{{ $car->mf->mf_name}}</td>
                     <td><img style="height: 100px; width: 100px;" src="{{ asset('/img/'.$car->images) }}" alt=""></td>
-                    <td>
-                        <!-- Cach 3  -->
-                        <a class="btn btn-primary" href="{{ action([App\Http\Controllers\CarController::class, 'show'], ['car' => $car->id]) }}" role="button">Detail</a>
+                    <td style="display: flex;">
+                        <a class="btn btn-primary m-2" href="{{ action([App\Http\Controllers\CarController::class, 'show'], ['car' => $car->id]) }}" role="button">Detail</a>
+                        <a class="btn btn-primary m-2" href="{{ action([App\Http\Controllers\CarController::class, 'edit'], ['car' => $car->id]) }}" role="button">Update</a>
                     </td>
                     <td>
-                        <a class="btn btn-primary" href="{{ action([App\Http\Controllers\CarController::class, 'edit'], ['car' => $car->id]) }}" role="button">Update</a>
                     </td>
 
                 </tr>
                 @endforeach
             </tbody>
-
         </table>
     </div>
 </body>
